@@ -1,11 +1,13 @@
 # depslib dependency file v1.0
-1475451501 source:c:\users\danil\documents\trabalhoed\calculadora\main.c
+1475969338 source:c:\users\danil\documents\trabalhoed\calculadora\main.c
 	<stdio.h>
+	<stdlib.h>
+	<string.h>
 	"pilha.h"
 
 1475002870 c:\users\danil\documents\trabalhoed\calculadora\pilha.h
 
-1475334726 source:c:\users\danil\documents\trabalhoed\calculadora\pilha.c
+1475969582 source:c:\users\danil\documents\trabalhoed\calculadora\pilha.c
 	"pilha.h"
 	<stdlib.h>
 	<stdio.h>

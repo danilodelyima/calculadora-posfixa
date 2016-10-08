@@ -21,10 +21,10 @@ void imprimirPilha(t_pilha* pilha){
         return;
     }
 
-    printf("++++++++++++++++++++++++++\n");
     for(i = pilha->topo; i > VAZIA; i--)
-        printf("%d\n", pilha->item[i]);
+        printf("%d. %d \n", i+1, pilha->item[i]);
 
+    printf("\n\n");
 }
 
 void push( t_pilha* pilha, int valor){
