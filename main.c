@@ -137,14 +137,22 @@ void resolucaoExpressao(char expressao[], t_pilha *pilha){
     }
 }
 
-void operacaoBasica(t_pilha *pilha, char entrada[]){
-    int op1, op2;
+int verificaOperandos(t_pilha *pilha){
 
     if(pilha->topo < 1){
         printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
         printf("Pressione ENTER para continuar\n");
         getchar();
-    }else{
+        getchar();
+        return 0;
+    }else
+        return 1;
+}
+
+void operacaoBasica(t_pilha *pilha, char entrada[]){
+    int op1, op2;
+
+    if(verificaOperandos(pilha)){
         op1 = pop(pilha);
         op2 = pop(pilha);
 
@@ -157,38 +165,36 @@ void operacaoBasica(t_pilha *pilha, char entrada[]){
         else
             push(pilha, op1/op2);
     }
+
 }
 
 void operacaoRepeticao(t_pilha *pilha, char entrada[]){
     int result = 0, i;
 
-    if(pilha->topo < 1){
-        printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
-        printf("Pressione ENTER para continuar\n");
-        getchar();
-    }else{
+    if(verificaOperandos(pilha)){
 
         if (strcmp(entrada, "+!") == 0)
             for(i = pilha->topo; i > VAZIA; i--)
                 result += pop(pilha);
-        else if (strcmp(entrada, "-!") == 0)
+        else if (strcmp(entrada, "-!") == 0){
+            result = pop(pilha);
             for(i = pilha->topo; i > VAZIA; i--)
                 result -= pop(pilha);
-        else
+        }
+        else if(strcmp(entrada, "*!") == 0){
+            result = pop(pilha);
             for(i = pilha->topo; i > VAZIA; i--)
                 result *= pop(pilha);
+        }
+        push(pilha, result);
     }
-    push(pilha, result);
 }
 
 void copiaDeElemento(t_pilha *pilha, char entrada[]){
     int i, repeticoes, elemento;
 
-    if(pilha->topo < 1){
-        printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
-        printf("Pressione ENTER para continuar\n");
-        getchar();
-    }else{
+    if(verificaOperandos(pilha)){
+
         repeticoes = pop(pilha);
         elemento = pop(pilha);
 
@@ -227,7 +233,6 @@ void calculadora(t_pilha *pilha){
             valor = atoi(entrada);
             push(pilha, valor);
         }
-
         system(CLEAR);
     }while(strcmp (entrada, "sair") != 0);
 
