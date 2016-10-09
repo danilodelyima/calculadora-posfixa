@@ -157,7 +157,6 @@ void operacaoBasica(t_pilha *pilha, char entrada[]){
     }
 }
 
-
 void operacaoRepeticao(t_pilha *pilha, char entrada[]){
     int result = 0, i;
 
@@ -178,7 +177,19 @@ void operacaoRepeticao(t_pilha *pilha, char entrada[]){
     push(pilha, result);
 }
 
+void copiaDeElemento(t_pilha *pilha, char entrada[]){
+    int i, repeticoes, elemento;
 
+    if(pilha->topo < 1){
+        printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+    }else{
+        repeticoes = pop(pilha);
+        elemento = pop(pilha);
+
+        for(i=1; i<= repeticoes;i++)
+            push(pilha, elemento);
+    }
+}
 
 void calculadora(t_pilha *pilha){
     char entrada[10];
@@ -202,6 +213,10 @@ void calculadora(t_pilha *pilha){
 
             operacaoRepeticao(pilha, entrada);
 
+        }else if(strcmp(entrada, "c") == 0){
+
+            copiaDeElemento(pilha, entrada);
+
         }else{
             valor = atoi(entrada);
             push(pilha, valor);
@@ -215,7 +230,7 @@ void calculadora(t_pilha *pilha){
 int main(){
     char expressao[100];
     int opcao;
-    t_pilha* pilha = getPilha(10);
+    t_pilha* pilha = getPilha(20);
     t_pilha* calc = getPilha(20);
 
     printf("1.Resolucao de expressao\n");
@@ -227,6 +242,7 @@ int main(){
 	switch(opcao){
 		case 1:
 			resolucaoExpressao(expressao, pilha);
+			system(CLEAR);
 			main();
 		break;
 
@@ -237,6 +253,7 @@ int main(){
 		break;
 
 		case 3:
+		    system(CLEAR);
 		    printf("Saindo...\n");
 		    return 0;
         break;
@@ -257,6 +274,7 @@ int main(){
     */
 
     liberaPilha(pilha);
+    liberaPilha(calc);
 
     return 0;
 }
