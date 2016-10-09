@@ -142,6 +142,8 @@ void operacaoBasica(t_pilha *pilha, char entrada[]){
 
     if(pilha->topo < 1){
         printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+        printf("Pressione ENTER para continuar\n");
+        getchar();
     }else{
         op1 = pop(pilha);
         op2 = pop(pilha);
@@ -162,6 +164,8 @@ void operacaoRepeticao(t_pilha *pilha, char entrada[]){
 
     if(pilha->topo < 1){
         printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+        printf("Pressione ENTER para continuar\n");
+        getchar();
     }else{
 
         if (strcmp(entrada, "+!") == 0)
@@ -182,6 +186,8 @@ void copiaDeElemento(t_pilha *pilha, char entrada[]){
 
     if(pilha->topo < 1){
         printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+        printf("Pressione ENTER para continuar\n");
+        getchar();
     }else{
         repeticoes = pop(pilha);
         elemento = pop(pilha);
