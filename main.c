@@ -137,9 +137,52 @@ void resolucaoExpressao(char expressao[], t_pilha *pilha){
     }
 }
 
+void operacaoBasica(t_pilha *pilha, char entrada[]){
+    int op1, op2;
+
+    if(pilha->topo < 1){
+        printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+    }else{
+        op1 = pop(pilha);
+        op2 = pop(pilha);
+
+        if (strcmp(entrada, "+") == 0)
+            push(pilha, op1+op2);
+        else if (strcmp(entrada, "-") == 0)
+            push(pilha, op1-op2);
+        else if (strcmp(entrada, "*") == 0)
+            push(pilha, op1*op2);
+        else
+            push(pilha, op1/op2);
+    }
+}
+
+
+void operacaoRepeticao(t_pilha *pilha, char entrada[]){
+    int result = 0, i;
+
+    if(pilha->topo < 1){
+        printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
+    }else{
+
+        if (strcmp(entrada, "+!") == 0)
+            for(i = pilha->topo; i > VAZIA; i--)
+                result += pop(pilha);
+        else if (strcmp(entrada, "-!") == 0)
+            for(i = pilha->topo; i > VAZIA; i--)
+                result -= pop(pilha);
+        else
+            for(i = pilha->topo; i > VAZIA; i--)
+                result *= pop(pilha);
+    }
+    push(pilha, result);
+}
+
+
+
 void calculadora(t_pilha *pilha){
     char entrada[10];
-    int valor, op1, op2;
+    int valor;
     system(CLEAR);
     printf("Modo calculadora\n");
     printf("Digite 'sair' para sair do modo calculadora\n");
@@ -148,31 +191,27 @@ void calculadora(t_pilha *pilha){
         imprimirPilha(pilha);
         printf("->");
         scanf("%s", entrada);
+
         if(strcmp(entrada, "+") == 0 || strcmp(entrada, "-") == 0 ||
            strcmp(entrada, "*") == 0 || strcmp(entrada, "/") == 0){
-            if(pilha->topo < 1){
-                printf("NUMERO DE OPERANDOS INSUFICIENTE\n\n");
-            }else{
-                op1 = pop(pilha);
-                op2 = pop(pilha);
 
-                if (strcmp(entrada, "+") == 0)
-                        push(pilha, op1+op2);
-                else if (strcmp(entrada, "-") == 0)
-                        push(pilha, op1-op2);
-                else if (strcmp(entrada, "*") == 0)
-                        push(pilha, op1*op2);
-                else if (strcmp(entrada, "/") == 0)
-                        push(pilha, op1/op2);
-            }
+            operacaoBasica(pilha, entrada);
+
+        }else if(strcmp(entrada, "+!") == 0 || strcmp(entrada, "-!") == 0 ||
+                 strcmp(entrada, "*!") == 0){
+
+            operacaoRepeticao(pilha, entrada);
+
         }else{
             valor = atoi(entrada);
             push(pilha, valor);
         }
+
         system(CLEAR);
     }while(strcmp (entrada, "sair") != 0);
 
 }
+
 int main(){
     char expressao[100];
     int opcao;
