@@ -264,15 +264,6 @@ int main(){
 			main();
     }
 
-    /*
-    if(!validaExpressao(expressao, pilha))
-        printf("invalido\n");
-    else{
-        posFixa(expressao, posfixa, pilha);
-        printf("%s\n", posfixa);
-    }
-    */
-
     liberaPilha(pilha);
     liberaPilha(calc);
 
