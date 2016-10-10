@@ -13,15 +13,40 @@
 
 #endif
 
+void formataEntrada(char expressao[]){
+    char result[50];
+    int i = 0;
+    int aux = 0;
+    getchar();
+    printf("Digite a expressao: \n");
+    scanf("%[^\n]s", expressao);
+
+    while(expressao[i] != '\0'){
+
+        if((expressao[i] == '+' || expressao[i] == '-' || expressao[i] == '*' ||
+           expressao[i] == '/')  && expressao[i-1] != ' '){
+
+            result[aux++] = ' ';
+            result[aux++] = expressao[i];
+            result[aux++] = ' ';
+
+        }else
+            result[aux++] = expressao[i];
+        i++;
+    }
+
+    result[aux] = '\0';
+    strcpy(expressao, result);
+
+}
+
 int validaExpressao(char expressao[], t_pilha *pilha){
     int valida = 1;
     int i = 0;
     char c;
-    printf("Digite a expressão: \n");
-    scanf("%[^\n]", expressao);
 
     while( (expressao[i] != '\0') && (valida != 0) ){
-        if(expressao[i] < 40 || expressao[i] == 44 || expressao[i] == 46 ||
+        if((expressao[i] != 32 && expressao[i] < 40) || expressao[i] == 44 || expressao[i] == 46 ||
           (expressao[i] > 57 && expressao[i] < 91) || expressao[i] == 92 ||
           (expressao[i] > 93 && expressao[i] < 123) || expressao[i] == 124 ||
            expressao[i] > 125){
@@ -75,6 +100,7 @@ int prioridade(char operador){
 
 void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     int i = 0, cont = 0;
+
     while( expressao[i] != '\0' ){
 
         if(expressao[i] == '+' || expressao[i] == '-' ||
@@ -117,7 +143,14 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
                     break;
             }
         }else{
-            posfixa[cont++] = expressao[i];
+            if (expressao[i+1] >= 48 || expressao[i+1] <= 57 ){
+                posfixa[cont++] = expressao[i];
+            }else{
+                posfixa[cont++] = expressao[i];
+                posfixa[cont++] = ' ';
+
+            }
+
         }
         i++;
     }
@@ -128,9 +161,13 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
 }
 
 void resolucaoExpressao(char expressao[], t_pilha *pilha){
-
+    char posfixa[100];
     if (validaExpressao(expressao, pilha)){
         printf("Expressao valida\n");
+        posFixa(expressao, posfixa, pilha);
+        printf("%s\n", posfixa);
+        getchar();
+        getchar();
     }
     else{
         printf("Expressao invalida");
@@ -252,6 +289,11 @@ int main(){
 
 	switch(opcao){
 		case 1:
+		    formataEntrada(expressao);
+		    printf("%s\n\n", expressao);
+		    getchar();
+		    getchar();
+		    getchar();
 			resolucaoExpressao(expressao, pilha);
 			system(CLEAR);
 			main();
