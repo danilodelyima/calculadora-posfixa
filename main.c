@@ -157,36 +157,49 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     posfixa[cont] = '\0';
 }
 
-void calculaExpressao(char posfixa[]){
+void calculaExpressao(char posfixa[], t_pilha *pilha){
     char split[50];
     int i, aux = 0;
-    int op1, op2;
+    int valor, marcador = 0, j;
 
     for(i = strlen(posfixa); i >= 0; i--){
-        if(strlen(split) == 0){
-            if(posfixa[i] == '+' || posfixa[i] == '-' || posfixa[i] == '*' ||
-               posfixa[i] == '/'){
-                push(pilha, posfixa[i]);
+
+        if(posfixa[i] == '+' || posfixa[i] == '-' || posfixa[i] == '*' ||
+           posfixa[i] == '/'){
+
+                push(pilha, (int) posfixa[i]);
+                marcador = i;
+                i--;
+                continue;
+
+        }else if(posfixa[i] == ' ' || i == 0){
+            if(marcador - i > 1){
+                for(j=i;j<marcador;j++)
+                    split[aux++] = posfixa[j];
+
+                split[aux] = '\0';
+                valor = atoi(split);
+                push(pilha, valor);
+                split[0] = '\0';
+                aux = 0;
             }
-        }else{
-            
-
+            marcador = i;
         }
-
     }
-
 }
 
 void resolucaoExpressao(char expressao[], t_pilha *pilha){
     char posfixa[100];
-    t_pilha pilha = getPilha(50);
 
     if (validaExpressao(expressao, pilha)){
         printf("Expressao valida\n");
         posFixa(expressao, posfixa, pilha);
         printf("%s\n", posfixa);
+        calculaExpressao(posfixa, pilha);
+        printf("\n\n");
+        imprimirPilha(pilha);
 
-
+        getchar();
         getchar();
         getchar();
     }
@@ -297,8 +310,8 @@ void calculadora(t_pilha *pilha){
 int main(){
     char expressao[100];
     int opcao;
-    t_pilha* pilha = getPilha(20);
-    t_pilha* calc = getPilha(20);
+    t_pilha* pilha = getPilha(100);
+    t_pilha* calc = getPilha(30);
 
     printf("1.Resolucao de expressao\n");
 	printf("2.Calculadora\n");

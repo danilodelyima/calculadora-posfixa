@@ -14,15 +14,17 @@ int topo(t_pilha* pilha){
 }
 
 void imprimirPilha(t_pilha* pilha){
-    int i;
+    int i, cont = 1;
 
     if(pilhaVazia(pilha)){
         printf("Pilha Vazia!\n");
         return;
     }
 
-    for(i = pilha->topo; i > VAZIA; i--)
-        printf("%d. %d \n", i+1, pilha->item[i]);
+    for(i = pilha->topo; i > VAZIA; i--){
+        printf("%d. %d \n", cont, pilha->item[i]);
+        cont++;
+    }
 
     printf("\n\n");
 }
