@@ -37,7 +37,6 @@ void formataEntrada(char expressao[]){
 
     result[aux] = '\0';
     strcpy(expressao, result);
-
 }
 
 int validaExpressao(char expressao[], t_pilha *pilha){
@@ -95,7 +94,6 @@ int prioridade(char operador){
         return 3;
     else
         return 1;
-
 }
 
 void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
@@ -148,7 +146,6 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
             }else{
                 posfixa[cont++] = expressao[i];
                 posfixa[cont++] = ' ';
-
             }
 
         }
@@ -160,12 +157,36 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     posfixa[cont] = '\0';
 }
 
+void calculaExpressao(char posfixa[]){
+    char split[50];
+    int i, aux = 0;
+    int op1, op2;
+
+    for(i = strlen(posfixa); i >= 0; i--){
+        if(strlen(split) == 0){
+            if(posfixa[i] == '+' || posfixa[i] == '-' || posfixa[i] == '*' ||
+               posfixa[i] == '/'){
+                push(pilha, posfixa[i]);
+            }
+        }else{
+            
+
+        }
+
+    }
+
+}
+
 void resolucaoExpressao(char expressao[], t_pilha *pilha){
     char posfixa[100];
+    t_pilha pilha = getPilha(50);
+
     if (validaExpressao(expressao, pilha)){
         printf("Expressao valida\n");
         posFixa(expressao, posfixa, pilha);
         printf("%s\n", posfixa);
+
+
         getchar();
         getchar();
     }
@@ -202,7 +223,6 @@ void operacaoBasica(t_pilha *pilha, char entrada[]){
         else
             push(pilha, op1/op2);
     }
-
 }
 
 void operacaoRepeticao(t_pilha *pilha, char entrada[]){
@@ -272,7 +292,6 @@ void calculadora(t_pilha *pilha){
         }
         system(CLEAR);
     }while(strcmp (entrada, "sair") != 0);
-
 }
 
 int main(){
@@ -290,10 +309,6 @@ int main(){
 	switch(opcao){
 		case 1:
 		    formataEntrada(expressao);
-		    printf("%s\n\n", expressao);
-		    getchar();
-		    getchar();
-		    getchar();
 			resolucaoExpressao(expressao, pilha);
 			system(CLEAR);
 			main();
