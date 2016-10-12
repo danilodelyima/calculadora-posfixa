@@ -25,8 +25,6 @@ void imprimirPilha(t_pilha* pilha){
         printf("%d. %d \n", cont, pilha->item[i]);
         cont++;
     }
-
-    printf("\n\n");
 }
 
 void push( t_pilha* pilha, int valor){

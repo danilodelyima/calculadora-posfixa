@@ -16,20 +16,18 @@
 void formataEntrada(char expressao[]){
     char result[50];
     int i = 0;
-    int aux = 0;
+    int aux = 1;
     getchar();
     printf("Digite a expressao: \n");
     scanf("%[^\n]s", expressao);
-
+    result[0] = ' ';
     while(expressao[i] != '\0'){
 
         if((expressao[i] == '+' || expressao[i] == '-' || expressao[i] == '*' ||
            expressao[i] == '/')  && expressao[i-1] != ' '){
 
-            result[aux++] = ' ';
             result[aux++] = expressao[i];
             result[aux++] = ' ';
-
         }else
             result[aux++] = expressao[i];
         i++;
@@ -157,34 +155,64 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     posfixa[cont] = '\0';
 }
 
+void empilhaOperando(char split[], char posfixa[], t_pilha *pilha, int inicio, int fim){
+    int aux = 0, j;
+
+    for(j=inicio; j<fim; j++)
+        split[aux++] = posfixa[j];
+    split[aux] = '\0';
+    push(pilha, atoi(split));
+    aux = 0;
+}
+
 void calculaExpressao(char posfixa[], t_pilha *pilha){
-    char split[50];
-    int i, aux = 0;
-    int valor, marcador = 0, j;
+    char split[10];
+    int i = 0;
+    int marcador_inicio = 0, marcador_fim = 0;
+    int op1, op2;
 
-    for(i = strlen(posfixa); i >= 0; i--){
+    while(posfixa[i] != '\0'){
+        marcador_fim = i;
 
-        if(posfixa[i] == '+' || posfixa[i] == '-' || posfixa[i] == '*' ||
-           posfixa[i] == '/'){
+        if(posfixa[i] == ' '){
+            if(marcador_fim - marcador_inicio > 1)
+                empilhaOperando(split, posfixa, pilha, marcador_inicio, marcador_fim);
+            i++;
+            marcador_inicio = marcador_fim;
+            continue;
 
-                push(pilha, (int) posfixa[i]);
-                marcador = i;
-                i--;
-                continue;
+        }else if(posfixa[i] == '+' || posfixa[i] == '-' ||
+                 posfixa[i] == '*' || posfixa[i] == '/' ){
 
-        }else if(posfixa[i] == ' ' || i == 0){
-            if(marcador - i > 1){
-                for(j=i;j<marcador;j++)
-                    split[aux++] = posfixa[j];
+            if(marcador_fim - marcador_inicio > 1 )
+                empilhaOperando(split, posfixa, pilha, marcador_inicio, marcador_fim);
 
-                split[aux] = '\0';
-                valor = atoi(split);
-                push(pilha, valor);
-                split[0] = '\0';
-                aux = 0;
+            marcador_inicio = marcador_fim;
+
+            switch(posfixa[i]){
+                case '+':
+                    op2 = pop(pilha);
+                    op1 = pop(pilha);
+                    push(pilha, op1+op2);
+                    break;
+                case '-':
+                    op2 = pop(pilha);
+                    op1 = pop(pilha);
+                    push(pilha, op1-op2);
+                    break;
+                case '*':
+                    op2 = pop(pilha);
+                    op1 = pop(pilha);
+                    push(pilha, op1*op2);
+                    break;
+                case '/':
+                    op2 = pop(pilha);
+                    op1 = pop(pilha);
+                    push(pilha, op1/op2);
+                    break;
             }
-            marcador = i;
         }
+        i++;
     }
 }
 
@@ -192,14 +220,14 @@ void resolucaoExpressao(char expressao[], t_pilha *pilha){
     char posfixa[100];
 
     if (validaExpressao(expressao, pilha)){
+        system(CLEAR);
         printf("Expressao valida\n");
         posFixa(expressao, posfixa, pilha);
-        printf("%s\n", posfixa);
+        printf("Expressao posfixa:\n%s\n", posfixa);
         calculaExpressao(posfixa, pilha);
-        printf("\n\n");
+        printf("Resultado:\n");
         imprimirPilha(pilha);
-
-        getchar();
+        printf("Pressione ENTER para continuar\n");
         getchar();
         getchar();
     }
@@ -308,9 +336,9 @@ void calculadora(t_pilha *pilha){
 }
 
 int main(){
-    char expressao[100];
+    char expressao[50];
     int opcao;
-    t_pilha* pilha = getPilha(100);
+    t_pilha* pilha = getPilha(30);
     t_pilha* calc = getPilha(30);
 
     printf("1.Resolucao de expressao\n");
