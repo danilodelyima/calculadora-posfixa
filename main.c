@@ -1,3 +1,12 @@
+/*
+Estrutura de Dados, turma B
+Arquivo: main.c
+Nome: Danilo de Lima Cabrinha
+Matrícula: 160026270
+Descrição: A primeira opção transforma expressões infixas em pós-fixas e calcula
+a expressão pós-fixada com auxílio de pilha.
+A segunda opção implementa uma calculadora em forma de pilha.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,8 +21,13 @@
 #define CLEAR "cls"
 
 #endif
-
-void formataEntrada(char expressao[]){
+/*! Valida Entrada. */
+/*!
+Valida a entrada de expressoes, permitindo somente operadores e operandos e
+adiciona espaços na string para serem usados na resoluçao
+da expressao posfixa.
+*/
+int validaEntrada(char expressao[]){
     char result[50];
     int i = 0;
     int aux = 1;
@@ -21,10 +35,18 @@ void formataEntrada(char expressao[]){
     printf("Digite a expressao: \n");
     scanf("%[^\n]s", expressao);
     result[0] = ' ';
+
     while(expressao[i] != '\0'){
 
-        if((expressao[i] == '+' || expressao[i] == '-' || expressao[i] == '*' ||
-           expressao[i] == '/')  && expressao[i-1] != ' '){
+        if(expressao[i] < 40 || expressao[i] == 44 || expressao[i] == 46 ||
+          (expressao[i] > 57 && expressao[i] < 91) || expressao[i] == 92 ||
+          (expressao[i] > 93 && expressao[i] < 123) || expressao[i] == 124 ||
+           expressao[i] > 125){
+               return 0;
+           }
+
+        if(expressao[i] == '+' || expressao[i] == '-' || expressao[i] == '*' ||
+           expressao[i] == '/') {
 
             result[aux++] = expressao[i];
             result[aux++] = ' ';
@@ -35,7 +57,16 @@ void formataEntrada(char expressao[]){
 
     result[aux] = '\0';
     strcpy(expressao, result);
+
+    return 1;
 }
+
+
+/*! Valida Expressao. */
+/*!
+Valida a expressao verificando se ha operadores de escopo abertos e fechados
+em quantidades iguais.
+*/
 
 int validaExpressao(char expressao[], t_pilha *pilha){
     int valida = 1;
@@ -43,13 +74,6 @@ int validaExpressao(char expressao[], t_pilha *pilha){
     char c;
 
     while( (expressao[i] != '\0') && (valida != 0) ){
-        if((expressao[i] != 32 && expressao[i] < 40) || expressao[i] == 44 || expressao[i] == 46 ||
-          (expressao[i] > 57 && expressao[i] < 91) || expressao[i] == 92 ||
-          (expressao[i] > 93 && expressao[i] < 123) || expressao[i] == 124 ||
-           expressao[i] > 125){
-            valida = 0;
-            continue;
-        }
 
         if((expressao[i] == '(') || (expressao[i] == '[') || (expressao[i] == '{'))
             push(pilha, (int) expressao[i]);
@@ -85,6 +109,10 @@ int validaExpressao(char expressao[], t_pilha *pilha){
         return 0;
 }
 
+/*! prioridade. */
+/*!
+Define a prioridade entre os operadores dando menor valor para o mais importante.
+*/
 int prioridade(char operador){
     if(operador == '+' || operador == '-')
         return 2;
@@ -94,6 +122,10 @@ int prioridade(char operador){
         return 1;
 }
 
+/*! posFixa. */
+/*!
+Transforma a expressao infixa em posfixa
+*/
 void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     int i = 0, cont = 0;
 
@@ -155,6 +187,10 @@ void posFixa(char expressao[], char posfixa[], t_pilha *pilha){
     posfixa[cont] = '\0';
 }
 
+/*! empilhaOperando */
+/*!
+Empilha os operandos
+*/
 void empilhaOperando(char split[], char posfixa[], t_pilha *pilha, int inicio, int fim){
     int aux = 0, j;
 
@@ -165,6 +201,12 @@ void empilhaOperando(char split[], char posfixa[], t_pilha *pilha, int inicio, i
     aux = 0;
 }
 
+/*! calculaExpressao. */
+/*!
+Parte a string atraves dos espaços, e então, empilha, qundo encontra um operador
+desempilha os operandos executa a operação e empilha novamente.
+Resolve a expressao.
+*/
 void calculaExpressao(char posfixa[], t_pilha *pilha){
     char split[10];
     int i = 0;
@@ -216,26 +258,41 @@ void calculaExpressao(char posfixa[], t_pilha *pilha){
     }
 }
 
+/*! resoluçaoExpressao. */
+/*!
+Junta todos as funcoes de resolucao da expressao desde da validacao da entrada
+ate a resolucao da expressao, compondo uma das duas principais funcionalidades
+do programa.
+*/
 void resolucaoExpressao(char expressao[], t_pilha *pilha){
     char posfixa[100];
 
-    if (validaExpressao(expressao, pilha)){
-        system(CLEAR);
-        printf("Expressao valida\n");
-        posFixa(expressao, posfixa, pilha);
-        printf("Expressao posfixa:\n%s\n", posfixa);
-        calculaExpressao(posfixa, pilha);
-        printf("Resultado:\n");
-        imprimirPilha(pilha);
+    if(validaEntrada(expressao)){
+        if (validaExpressao(expressao, pilha)){
+            system(CLEAR);
+            printf("Expressao valida\n");
+            posFixa(expressao, posfixa, pilha);
+            printf("Expressao posfixa:\n%s\n", posfixa);
+            calculaExpressao(posfixa, pilha);
+            printf("Resultado:\n");
+            imprimirPilha(pilha);
+            printf("Pressione ENTER para continuar\n");
+            getchar();
+            getchar();
+        }
+
+    }else{
+        printf("Expressao invalida\n");
         printf("Pressione ENTER para continuar\n");
         getchar();
         getchar();
     }
-    else{
-        printf("Expressao invalida");
-    }
 }
 
+/*! verificaOperandos. */
+/*!
+Verifica se ha operandos suficientes para ser feita uma operacao.
+*/
 int verificaOperandos(t_pilha *pilha){
 
     if(pilha->topo < 1){
@@ -248,6 +305,10 @@ int verificaOperandos(t_pilha *pilha){
         return 1;
 }
 
+/*! operacaoBasica. */
+/*!
+implementa as operacoes basicas de soma, subtracao e multiplicao.
+*/
 void operacaoBasica(t_pilha *pilha, char entrada[]){
     int op1, op2;
 
@@ -266,6 +327,11 @@ void operacaoBasica(t_pilha *pilha, char entrada[]){
     }
 }
 
+/*! operacaoRepeticao. */
+/*!
+implementa as operacoes de repeticao, usa todos os operandos da pilha empilha
+o resultado.
+*/
 void operacaoRepeticao(t_pilha *pilha, char entrada[]){
     int result = 0, i;
 
@@ -288,6 +354,12 @@ void operacaoRepeticao(t_pilha *pilha, char entrada[]){
     }
 }
 
+/*! copiaDeElemento. */
+/*!
+implementa a operacao de copia de elemento. retira da pilha a quantidade de
+repetiçoes e o elemento que será repetido, executa a operaçao e empilha o
+resultado.
+*/
 void copiaDeElemento(t_pilha *pilha, char entrada[]){
     int i, repeticoes, elemento;
 
@@ -301,6 +373,28 @@ void copiaDeElemento(t_pilha *pilha, char entrada[]){
     }
 }
 
+/*! ValidaCalculadora. */
+/*!
+permite somente operadores e operandos e a palavra 'sair' para abandonar o modo
+calculadora.
+*/
+int validaCalculadora(char entrada[]){
+    int i = 0;
+
+    while(entrada[i] != '\0'){
+        if((entrada[i] < 48 || entrada[i] > 57) && strcmp(entrada, "sair") != 0){
+            return 0;
+        }
+        i++;
+    }
+    return 1;
+}
+
+/*! Calculadora. */
+/*!
+implementa a interface da calculadora e compoe uma das duas funcionalidades do
+programa.
+*/
 void calculadora(t_pilha *pilha){
     char entrada[10];
     int valor;
@@ -327,15 +421,30 @@ void calculadora(t_pilha *pilha){
 
             copiaDeElemento(pilha, entrada);
 
-        }else{
-            valor = atoi(entrada);
-            push(pilha, valor);
+        }
+        else{
+            if(validaCalculadora(entrada)){
+                valor = atoi(entrada);
+                push(pilha, valor);
+            }
+            else{
+                printf("Valor invalido\n");
+                printf("Pressione ENTER para continuar ou 'sair' para sair do modo calculadora");
+                getchar();
+                getchar();
+            }
         }
         system(CLEAR);
     }while(strcmp (entrada, "sair") != 0);
 }
 
+
+/*! main. */
+/*!
+implementa o menu
+*/
 int main(){
+
     char expressao[50];
     int opcao;
     t_pilha* pilha = getPilha(30);
@@ -349,7 +458,6 @@ int main(){
 
 	switch(opcao){
 		case 1:
-		    formataEntrada(expressao);
 			resolucaoExpressao(expressao, pilha);
 			system(CLEAR);
 			main();

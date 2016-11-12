@@ -1,3 +1,9 @@
+/*
+Estrutura de Dados, turma B
+Arquivo: main.c
+Nome: Danilo de Lima Cabrinha
+Matrícula: 160026270
+*/
 #include "pilha.h"
 #include <stdlib.h>
 #include <stdio.h>

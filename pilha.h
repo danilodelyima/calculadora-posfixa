@@ -1,4 +1,9 @@
-
+/*
+Estrutura de Dados, turma B
+Arquivo: main.c
+Nome: Danilo de Lima Cabrinha
+Matrícula: 160026270
+*/
 #ifndef PILHA_H
 #define PILHA_H
 
@@ -24,5 +29,5 @@ int      topo(t_pilha* pilha);
 
 void     imprimirPilha(t_pilha* pilha);
 
-#endif 
+#endif
 
