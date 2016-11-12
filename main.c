@@ -2,10 +2,10 @@
 Estrutura de Dados, turma B
 Arquivo: main.c
 Nome: Danilo de Lima Cabrinha
-MatrÌcula: 160026270
-DescriÁ„o: A primeira opÁ„o transforma expressıes infixas em pÛs-fixas e calcula
-a express„o pÛs-fixada com auxÌlio de pilha.
-A segunda opÁ„o implementa uma calculadora em forma de pilha.
+Matr√≠cula: 160026270
+Descri√ß√£o: A primeira op√ß√£o transforma express√µes infixas em p√≥s-fixas e calcula
+a express√£o p√≥s-fixada com aux√≠lio de pilha.
+A segunda op√ß√£o implementa uma calculadora em forma de pilha.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@ A segunda opÁ„o implementa uma calculadora em forma de pilha.
 /*! Valida Entrada. */
 /*!
 Valida a entrada de expressoes, permitindo somente operadores e operandos e
-adiciona espaÁos na string para serem usados na resoluÁao
+adiciona espa√ßos na string para serem usados na resolu√ßao
 da expressao posfixa.
 */
 int validaEntrada(char expressao[]){
@@ -203,8 +203,8 @@ void empilhaOperando(char split[], char posfixa[], t_pilha *pilha, int inicio, i
 
 /*! calculaExpressao. */
 /*!
-Parte a string atraves dos espaÁos, e ent„o, empilha, qundo encontra um operador
-desempilha os operandos executa a operaÁ„o e empilha novamente.
+Parte a string atraves dos espa√ßos, e ent√£o, empilha, qundo encontra um operador
+desempilha os operandos executa a opera√ß√£o e empilha novamente.
 Resolve a expressao.
 */
 void calculaExpressao(char posfixa[], t_pilha *pilha){
@@ -258,7 +258,7 @@ void calculaExpressao(char posfixa[], t_pilha *pilha){
     }
 }
 
-/*! resoluÁaoExpressao. */
+/*! resolu√ßaoExpressao. */
 /*!
 Junta todos as funcoes de resolucao da expressao desde da validacao da entrada
 ate a resolucao da expressao, compondo uma das duas principais funcionalidades
@@ -357,7 +357,7 @@ void operacaoRepeticao(t_pilha *pilha, char entrada[]){
 /*! copiaDeElemento. */
 /*!
 implementa a operacao de copia de elemento. retira da pilha a quantidade de
-repetiÁoes e o elemento que ser· repetido, executa a operaÁao e empilha o
+repeti√ßoes e o elemento que ser√° repetido, executa a opera√ßao e empilha o
 resultado.
 */
 void copiaDeElemento(t_pilha *pilha, char entrada[]){
@@ -486,3 +486,4 @@ int main(){
 
     return 0;
 }
+
